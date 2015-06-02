@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ch.jhoelter.zaas</groupId>
-	<artifactId>zaas-auth-server</artifactId>
+	<artifactId>zaas-authserver</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>zaas auth-server</name>
+	<name>zaas authserver</name>
 	<description>POC ZAAS Oauth 2.0 Authorization Server</description>
 
 	<parent>
