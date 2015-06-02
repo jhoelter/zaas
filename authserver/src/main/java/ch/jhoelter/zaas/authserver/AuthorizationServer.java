@@ -99,15 +99,15 @@ public class AuthorizationServer extends WebMvcConfigurerAdapter {
             this.propertyResolver = new RelaxedPropertyResolver(environment, ENV_OAUTH);
         }
 
-//        @Bean
-//        @Primary
-//        public DefaultTokenServices tokenServices() {
-//            DefaultTokenServices tokenServices = new DefaultTokenServices();
-//            tokenServices.setSupportRefreshToken(true);
-//            tokenServices.setTokenStore(jwtTokenStore);
-//            tokenServices.setAuthenticationManager(authenticationManager);
-//            return tokenServices;
-//        }
+        @Bean
+        @Primary
+        public DefaultTokenServices tokenServices() {
+            DefaultTokenServices tokenServices = new DefaultTokenServices();
+            tokenServices.setSupportRefreshToken(true);
+            tokenServices.setTokenStore(jwtTokenStore);
+            tokenServices.setAuthenticationManager(authenticationManager);
+            return tokenServices;
+        }
 
 
         @Override
@@ -115,8 +115,8 @@ public class AuthorizationServer extends WebMvcConfigurerAdapter {
             endpoints
                     .authenticationManager(authenticationManager)
                     .tokenStore(jwtTokenStore)
-                    .accessTokenConverter(jwtAccessTokenConverter);
-                    //.userDetailsService(userDetailsService);
+                    .accessTokenConverter(jwtAccessTokenConverter)
+                    .userDetailsService(userDetailsService);
         }
 
         @Override
