@@ -1,0 +1,18 @@
+server:
+  port: 9999
+  contextPath: /uaa
+  tomcat:
+    access-log-enabled: true
+    access-log-pattern: auth%t %u "%r" %s %S %D %{Authorization}i %{JSESSIONID}c
+    baseDir: tomcat
+
+authentication:
+ oauth:
+   clientid: testClient
+   secret: winner
+   # Token is valid 30 minutes
+   tokenValidityInSeconds: 60
+
+logging:
+  level:
+    org.springframework.security: DEBUG
