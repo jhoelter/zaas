@@ -11,8 +11,10 @@ authentication:
    clientid: testClient
    secret: winner
    # Token is valid 30 minutes
-   tokenValidityInSeconds: 60
+   tokenValidityInSeconds: 6000
 
 logging:
   level:
     org.springframework.security: DEBUG
+management:
+  port: 8085
