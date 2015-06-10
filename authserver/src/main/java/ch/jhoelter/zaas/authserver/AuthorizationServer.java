@@ -13,6 +13,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,6 +39,7 @@ import java.security.KeyPair;
  */
 @SpringBootApplication
 @Controller
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @SessionAttributes("authorizationRequest")
 public class AuthorizationServer extends WebMvcConfigurerAdapter {
 
@@ -65,7 +67,7 @@ public class AuthorizationServer extends WebMvcConfigurerAdapter {
         }
 
         @Bean
-        public JwtTokenStore jwtTokenStore(){
+        public JwtTokenStore jwtTokenStore() {
             return new JwtTokenStore(jwtAccessTokenConverter());
         }
     }
@@ -178,4 +180,5 @@ public class AuthorizationServer extends WebMvcConfigurerAdapter {
                     .contextSource().ldif("classpath:test-server.ldif");
         }
     }
+
 }
