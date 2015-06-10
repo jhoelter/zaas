@@ -7,14 +7,24 @@ server:
     baseDir: tomcat
 
 authentication:
+ ldap:
+  url: ldap://127.0.0.1:33389/dc=springframework,dc=org
+  userSearchBase:
+  userDnPatterns: uid={0},ou=people
+  groupSearchBase: ou=groups
+  groupSearchFilter: (uniqueMember={0})
+
  oauth:
    clientid: testClient
    secret: winner
    # Token is valid 30 minutes
-   tokenValidityInSeconds: 6000
+#   tokenValidityInSeconds: 1800
+   tokenValidityInSeconds: 60
 
 logging:
   level:
     org.springframework.security: DEBUG
 management:
   port: 8085
+
+helloServer.name: Jet Suisse

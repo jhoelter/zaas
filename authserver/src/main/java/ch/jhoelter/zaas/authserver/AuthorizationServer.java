@@ -1,11 +1,13 @@
 package ch.jhoelter.zaas.authserver;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
@@ -41,6 +43,7 @@ import java.security.KeyPair;
 @Controller
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @SessionAttributes("authorizationRequest")
+@ImportResource("classpath:/spring/application-context.xml")
 public class AuthorizationServer extends WebMvcConfigurerAdapter {
 
     public static void main(String[] args) {
@@ -94,6 +97,7 @@ public class AuthorizationServer extends WebMvcConfigurerAdapter {
         private JwtTokenStore jwtTokenStore;
 
         @Inject
+        @Qualifier("myUserDetailsService")
         private UserDetailsService userDetailsService;
 
         @Override
@@ -110,7 +114,6 @@ public class AuthorizationServer extends WebMvcConfigurerAdapter {
             tokenServices.setAuthenticationManager(authenticationManager);
             return tokenServices;
         }
-
 
         @Override
         public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
@@ -160,24 +163,29 @@ public class AuthorizationServer extends WebMvcConfigurerAdapter {
             return super.authenticationManagerBean();
         }
 
-        @Bean
-        @Override
-        public UserDetailsService userDetailsServiceBean() throws Exception {
-            return super.userDetailsServiceBean();
-        }
     }
 
     @Configuration
-    protected static class AuthenticationConfiguration extends
-            GlobalAuthenticationConfigurerAdapter {
+    protected static class AuthenticationConfiguration extends GlobalAuthenticationConfigurerAdapter implements EnvironmentAware {
+
+        private static final String ENV_LDAP = "authentication.ldap.";
+        private static final String PROP_SEARCH_FILTER = "userDnPatterns";
+        private static final String PROP_GROUP_SEARCH_BASE = "groupSearchBase";
+
+        private RelaxedPropertyResolver propertyResolver;
+
+        @Override
+        public void setEnvironment(Environment environment) {
+            this.propertyResolver = new RelaxedPropertyResolver(environment, ENV_LDAP);
+        }
 
         @Override
         public void init(AuthenticationManagerBuilder auth) throws Exception {
             auth
                     .ldapAuthentication()
-                    .userDnPatterns("uid={0},ou=people")
-                    .groupSearchBase("ou=groups")
-                    .contextSource().ldif("classpath:test-server.ldif");
+                    .userDnPatterns(propertyResolver.getProperty(PROP_SEARCH_FILTER))
+                    .groupSearchBase(propertyResolver.getProperty(PROP_GROUP_SEARCH_BASE))
+                    .contextSource();
         }
     }
 
