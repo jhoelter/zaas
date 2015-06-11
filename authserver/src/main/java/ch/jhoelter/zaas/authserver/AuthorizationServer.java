@@ -158,6 +158,7 @@ public class AuthorizationServer extends WebMvcConfigurerAdapter {
         }
 
         @Bean
+        @Primary
         @Override
         public AuthenticationManager authenticationManagerBean() throws Exception {
             return super.authenticationManagerBean();
