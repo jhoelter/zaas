@@ -43,7 +43,7 @@ import java.security.KeyPair;
 @Controller
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @SessionAttributes("authorizationRequest")
-@ImportResource("classpath:/spring/application-context.xml")
+@ImportResource("classpath:/spring/application-context*.xml")
 public class AuthorizationServer extends WebMvcConfigurerAdapter {
 
     public static void main(String[] args) {

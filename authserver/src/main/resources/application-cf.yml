@@ -2,3 +2,11 @@ server:
   port: 80
   tomcat:
       access-log-enabled: false
+
+authentication:
+ ldap:
+  url: ldap://127.0.0.1:33389/dc=springframework,dc=org
+  userSearchBase:
+  userDnPatterns: uid={0},ou=people
+  groupSearchBase: ou=groups
+  groupSearchFilter: (uniqueMember={0})
